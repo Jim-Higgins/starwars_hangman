@@ -7,17 +7,22 @@ import LetterButton from './Components/LetterButton';
 class App extends React.Component {
 
   state = {
-    availableLetters: ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
+    availableLetters: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
     pickedChosenLetters: '',
-    generatedWord: 'Wars',
+    generatedWord: 'WARS',
     usedLetters: ''
   }
 
   render(){
+    const linestuff = /[A-Z]/g
     return (
       <div className="App">
         <Header/>
-
+      <div>
+        <p>{this.state.generatedWord.split('').map(letter => {
+          return letter.replace(linestuff,' _ ')
+        })  }</p>
+      </div>
 
         {this.state.availableLetters.map((letter, index) =>{
          return <LetterButton key={index} letter={letter} onClick={this.handleClick}/>
