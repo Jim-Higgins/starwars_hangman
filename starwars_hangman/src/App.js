@@ -8,22 +8,20 @@ class App extends React.Component {
 
   state = {
     availableLetters: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
-    pickedChosenLetters: '',
     generatedWord: 'WARS',
     usedLetters: ''
   }
 
+
+
   render(){
-    const linestuff = /[A-Z]/g
+    const hiddenWord = this.state.generatedWord.replace(new RegExp("[^" + this.state.usedLetters + "]","g")," _ ")
     return (
       <div className="App">
         <Header/>
-      <div>
-        <p>{this.state.generatedWord.split('').map(letter => {
-          return letter.replace(linestuff,' _ ')
-        })  }</p>
-      </div>
-
+        <p>
+          {hiddenWord}
+        </p>
         {this.state.availableLetters.map((letter, index) =>{
          return <LetterButton key={index} letter={letter} onClick={this.handleClick}/>
         })}
@@ -38,7 +36,8 @@ class App extends React.Component {
     this.setState(prevState => ( {
       usedLetters: prevState.usedLetters + value
     })
-  )}
+  )
+}
 }
 
 export default App;
