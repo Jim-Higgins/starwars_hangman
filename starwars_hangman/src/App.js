@@ -96,9 +96,13 @@ class App extends React.Component {
 	};
 
 	chooseRandomFilm = () => {
-		const allFilms = this.state.data.map(obj => obj.title);
+		const allFilms = this.state.data.map(obj => obj.title.toUpperCase());
 		const randomFilm = allFilms[Math.floor(Math.random() * allFilms.length)];
-		this.setState(() => ({ generatedWord: randomFilm }));
+		this.setState(() => ({
+			generatedWord: randomFilm,
+			usedLetters: "",
+			badLetters: ""
+		}));
 	};
 }
 
