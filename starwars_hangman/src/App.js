@@ -4,7 +4,8 @@ import getFilms from "./Api";
 
 import "./css/App.css";
 import Header from "./Components/Header";
-import LetterButton from "./Components/LetterButton";
+import ReusableButton from "./Components/ReusableButton";
+import Text from "./Components/Text";
 
 class App extends React.Component {
 	state = {
@@ -40,7 +41,7 @@ class App extends React.Component {
 		data: [],
 		usedLetters: "",
 		badLetters: "",
-		numOfLives: 4
+		numOfLives: 5
 	};
 
 	componentDidMount() {
@@ -66,18 +67,26 @@ class App extends React.Component {
 				)}
 				{this.state.availableLetters.map((object, index) => {
 					return (
-						<LetterButton
+						<ReusableButton
 							key={index}
-							letter={object.letter}
+							text={object.letter}
 							disabled={object.disabled}
 							onClick={this.handleClick}
+							className="letter-button"
 						/>
 					);
 				})}
 				<p>Lives: {this.state.numOfLives}</p>
-				{hiddenWord === this.state.generatedWord && <p>You Win</p>}
-				{this.state.numOfLives === 0 && <p>Looossseerrr</p>}
-				<button onClick={() => this.chooseRandomFilm()}>Start Game</button>
+				{hiddenWord === this.state.generatedWord && (
+					<Text text="The Force will be with you. Always." />
+				)}
+				{this.state.numOfLives === 0 && (
+					<Text text="I find your lack of faith disturbing!" />
+				)}
+				<ReusableButton
+					text={"May The Force Be With You"}
+					onClick={() => this.chooseRandomFilm()}
+				/>
 			</div>
 		);
 	}
@@ -120,7 +129,7 @@ class App extends React.Component {
 		const setLetterToTrue = [...this.state.availableLetters];
 		setLetterToTrue.forEach(obj => (obj.disabled = true));
 		if (this.state.numOfLives === 0) {
-			this.setState({ availableLetters: setLetterToTrue });
+			this.setState({ availableLetters: setLetterToTrue, numOfLives: 5 });
 		}
 	};
 }
