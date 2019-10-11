@@ -85,7 +85,9 @@ class App extends React.Component {
 		const allLetters = [...this.state.availableLetters];
 		const letter = allLetters.findIndex(obj => obj.letter === value);
 		allLetters[letter].disabled = true;
-
+		if (this.state.numOfLives === 1) {
+			this.endGame();
+		}
 		if (!this.state.generatedWord.includes(value)) {
 			this.setState(prevState => ({
 				badLetters: prevState.badLetters + value,
@@ -111,6 +113,13 @@ class App extends React.Component {
 			badLetters: "",
 			availableLetters: setLetterToFalse
 		}));
+	};
+	endGame = () => {
+		const setLetterToTrue = [...this.state.availableLetters];
+		setLetterToTrue.forEach(obj => (obj.disabled = true));
+		if (this.state.numOfLives === 0) {
+			this.setState({ availableLetters: setLetterToTrue });
+		}
 	};
 }
 
