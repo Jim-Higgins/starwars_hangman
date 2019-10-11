@@ -9,32 +9,32 @@ import LetterButton from "./Components/LetterButton";
 class App extends React.Component {
 	state = {
 		availableLetters: [
-			"A",
-			"B",
-			"C",
-			"D",
-			"E",
-			"F",
-			"G",
-			"H",
-			"I",
-			"J",
-			"K",
-			"L",
-			"M",
-			"N",
-			"O",
-			"P",
-			"Q",
-			"R",
-			"S",
-			"T",
-			"U",
-			"V",
-			"W",
-			"X",
-			"Y",
-			"Z"
+			{ letter: "A", disabled: false },
+			{ letter: "B", disabled: false },
+			{ letter: "C", disabled: false },
+			{ letter: "D", disabled: false },
+			{ letter: "E", disabled: false },
+			{ letter: "F", disabled: false },
+			{ letter: "G", disabled: false },
+			{ letter: "H", disabled: false },
+			{ letter: "I", disabled: false },
+			{ letter: "J", disabled: false },
+			{ letter: "K", disabled: false },
+			{ letter: "L", disabled: false },
+			{ letter: "M", disabled: false },
+			{ letter: "N", disabled: false },
+			{ letter: "O", disabled: false },
+			{ letter: "P", disabled: false },
+			{ letter: "Q", disabled: false },
+			{ letter: "R", disabled: false },
+			{ letter: "S", disabled: false },
+			{ letter: "T", disabled: false },
+			{ letter: "U", disabled: false },
+			{ letter: "V", disabled: false },
+			{ letter: "W", disabled: false },
+			{ letter: "X", disabled: false },
+			{ letter: "Y", disabled: false },
+			{ letter: "Z", disabled: false }
 		],
 		generatedWord: "STAR WARS",
 		data: [],
@@ -62,11 +62,12 @@ class App extends React.Component {
 			<div className="App">
 				<Header />
 				<p>{hiddenWord}</p>
-				{this.state.availableLetters.map((letter, index) => {
+				{this.state.availableLetters.map((object, index) => {
 					return (
 						<LetterButton
 							key={index}
-							letter={letter}
+							letter={object.letter}
+							disabled={object.disabled}
 							onClick={this.handleClick}
 						/>
 					);
@@ -81,16 +82,20 @@ class App extends React.Component {
 
 	handleClick = e => {
 		const value = e.target.value;
-		e.target.disabled = true;
+		const allLetters = [...this.state.availableLetters];
+		const letter = allLetters.findIndex(obj => obj.letter === value);
+		allLetters[letter].disabled = true;
 
 		if (!this.state.generatedWord.includes(value)) {
 			this.setState(prevState => ({
 				badLetters: prevState.badLetters + value,
-				numOfLives: prevState.numOfLives - 1
+				numOfLives: prevState.numOfLives - 1,
+				availableLetters: allLetters
 			}));
 		} else {
 			this.setState(prevState => ({
-				usedLetters: prevState.usedLetters + value
+				usedLetters: prevState.usedLetters + value,
+				availableLetters: allLetters
 			}));
 		}
 	};
@@ -98,10 +103,13 @@ class App extends React.Component {
 	chooseRandomFilm = () => {
 		const allFilms = this.state.data.map(obj => obj.title.toUpperCase());
 		const randomFilm = allFilms[Math.floor(Math.random() * allFilms.length)];
+		const setLetterToFalse = [...this.state.availableLetters];
+		setLetterToFalse.forEach(obj => (obj.disabled = false));
 		this.setState(() => ({
 			generatedWord: randomFilm,
 			usedLetters: "",
-			badLetters: ""
+			badLetters: "",
+			availableLetters: setLetterToFalse
 		}));
 	};
 }

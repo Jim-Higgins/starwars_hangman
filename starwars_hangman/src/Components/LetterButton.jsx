@@ -1,8 +1,8 @@
 import React from "react";
 
-const LetterButton = ({ letter, onClick }) => {
+const LetterButton = ({ letter, onClick, disabled }) => {
 	return (
-		<button onClick={onClick} value={letter} disabled={false}>
+		<button onClick={onClick} value={letter} disabled={disabled}>
 			{letter}
 		</button>
 	);
