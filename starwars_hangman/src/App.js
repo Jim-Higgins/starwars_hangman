@@ -61,7 +61,9 @@ class App extends React.Component {
 		return (
 			<div className="App">
 				<Header />
-				<p>{hiddenWord}</p>
+				{(this.state.numOfLives === 0 && <p>{this.state.generatedWord}</p>) || (
+					<p>{hiddenWord}</p>
+				)}
 				{this.state.availableLetters.map((object, index) => {
 					return (
 						<LetterButton
