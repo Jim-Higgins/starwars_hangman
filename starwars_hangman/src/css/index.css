@@ -2,6 +2,9 @@
 
 body {
   font-family: 'Poller One', cursive;
+  color: #ffe81f;
   font-size: 32px;
   text-shadow: 4px 4px 4px #aaa;
+  background-color: black;
+  background-image: url("../images/deathstar.jpg")
 }

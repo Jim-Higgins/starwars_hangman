@@ -3,6 +3,7 @@ import React from 'react';
 import getFilms from './Api';
 
 import './css/App.css';
+import Darth from './images/darth.jpg'
 import Header from './Components/Header';
 import ReusableButton from './Components/ReusableButton';
 import Text from './Components/Text';
@@ -41,7 +42,9 @@ class App extends React.Component {
     data: [],
     usedLetters: '',
     badLetters: '',
-    numOfLives: 5
+    numOfLives: 5,
+    // imageClass: ['first', 'second', 'third', 'fourth', 'fifth'],
+    currentImage: 'first'
   };
 
   componentDidMount() {
@@ -76,6 +79,8 @@ class App extends React.Component {
             />
           );
         })}
+        <br></br>
+        <img className={this.state.currentImage} src={Darth} alt="Darthvader"></img>
         <p>Lives: {this.state.numOfLives}</p>
         {hiddenWord === this.state.generatedWord && (
           <Text text="The Force will be with you. Always." />
@@ -103,7 +108,7 @@ class App extends React.Component {
       this.setState(prevState => ({
         badLetters: prevState.badLetters + value,
         numOfLives: prevState.numOfLives - 1,
-        availableLetters: allLetters
+        availableLetters: allLetters,
       }));
     } else {
       this.setState(prevState => ({
@@ -135,6 +140,10 @@ class App extends React.Component {
       });
     }
   };
+
+  // imageStuff = () => {
+  //   const imageSize = this.state.imageClass
+  // }
 }
 
 export default App;
