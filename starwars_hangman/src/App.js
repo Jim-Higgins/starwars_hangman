@@ -1,5 +1,7 @@
 import React from "react";
 
+import getFilms from "./Api";
+
 import "./css/App.css";
 import Header from "./Components/Header";
 import LetterButton from "./Components/LetterButton";
@@ -35,10 +37,15 @@ class App extends React.Component {
 			"Z"
 		],
 		generatedWord: "STAR WARS",
+		data: [],
 		usedLetters: "",
 		badLetters: "",
 		numOfLives: 4
 	};
+
+	componentDidMount() {
+		getFilms().then(results => this.setState({ data: results }));
+	}
 
 	render() {
 		const hiddenWord = this.state.generatedWord
@@ -67,6 +74,7 @@ class App extends React.Component {
 				<p>Lives: {this.state.numOfLives}</p>
 				{hiddenWord === this.state.generatedWord && <p>You Win</p>}
 				{this.state.numOfLives === 0 && <p>Looossseerrr</p>}
+				<button onClick={() => this.chooseRandomFilm()}>Start Game</button>
 			</div>
 		);
 	}
@@ -76,7 +84,6 @@ class App extends React.Component {
 		e.target.disabled = true;
 
 		if (!this.state.generatedWord.includes(value)) {
-			console.log("hello");
 			this.setState(prevState => ({
 				badLetters: prevState.badLetters + value,
 				numOfLives: prevState.numOfLives - 1
@@ -86,6 +93,12 @@ class App extends React.Component {
 				usedLetters: prevState.usedLetters + value
 			}));
 		}
+	};
+
+	chooseRandomFilm = () => {
+		const allFilms = this.state.data.map(obj => obj.title);
+		const randomFilm = allFilms[Math.floor(Math.random() * allFilms.length)];
+		this.setState(() => ({ generatedWord: randomFilm }));
 	};
 }
 
