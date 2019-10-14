@@ -45,7 +45,7 @@ class App extends React.Component {
 		badLetters: "",
 		numOfLives: 5,
 		imageClass: ["first", "second", "third", "fourth", "fifth"],
-		currentImage: "first"
+		currentImageIndex: 0
 	};
 
 	componentDidMount() {
@@ -58,7 +58,8 @@ class App extends React.Component {
 			validLetters,
 			numOfLives,
 			availableLetters,
-			currentImage
+			currentImageIndex,
+			imageClass
 		} = this.state;
 		const hiddenWord = generatedWord
 			.split(" ")
@@ -75,8 +76,12 @@ class App extends React.Component {
 					availableLetters={availableLetters}
 					handleClick={this.handleClick}
 				/>
-				<br></br>
-				<img className={currentImage} src={Darth} alt="Darthvader"></img>
+				<br />
+				<img
+					className={imageClass[currentImageIndex]}
+					src={Darth}
+					alt="Darthvader"
+				></img>
 				<p>Lives: {numOfLives}</p>
 				{hiddenWord === generatedWord && (
 					<Text text="The Force will be with you. Always." />
@@ -93,11 +98,17 @@ class App extends React.Component {
 	}
 
 	handleClick = e => {
-		const { availableLetters, generatedWord, numOfLives } = this.state;
+		const {
+			availableLetters,
+			generatedWord,
+			numOfLives,
+			currentImageIndex
+		} = this.state;
 		const value = e.target.value;
 		const allLetters = [...availableLetters];
 		const letter = allLetters.findIndex(obj => obj.letter === value);
 		allLetters[letter].disabled = true;
+
 		if (numOfLives === 0) {
 			this.endGame();
 		}
@@ -105,7 +116,8 @@ class App extends React.Component {
 			this.setState(prevState => ({
 				badLetters: prevState.badLetters + value,
 				numOfLives: prevState.numOfLives - 1,
-				availableLetters: allLetters
+				availableLetters: allLetters,
+				currentImageIndex: currentImageIndex + 1
 			}));
 		} else {
 			this.setState(prevState => ({
