@@ -7,6 +7,7 @@ import Darth from "./images/darth.jpg";
 import Header from "./Components/Header";
 import ReusableButton from "./Components/ReusableButton";
 import Text from "./Components/Text";
+import Letters from "./Components/Letters";
 
 class App extends React.Component {
 	state = {
@@ -40,10 +41,10 @@ class App extends React.Component {
 		],
 		generatedWord: "STAR WARS",
 		data: [],
-		usedLetters: "",
+		validLetters: "",
 		badLetters: "",
 		numOfLives: 5,
-		// imageClass: ['first', 'second', 'third', 'fourth', 'fifth'],
+		imageClass: ["first", "second", "third", "fourth", "fifth"],
 		currentImage: "first"
 	};
 
@@ -54,7 +55,7 @@ class App extends React.Component {
 	render() {
 		const {
 			generatedWord,
-			usedLetters,
+			validLetters,
 			numOfLives,
 			availableLetters,
 			currentImage
@@ -62,7 +63,7 @@ class App extends React.Component {
 		const hiddenWord = generatedWord
 			.split(" ")
 			.map(word => {
-				return word.replace(new RegExp("[^" + usedLetters + "]", "g"), " _ ");
+				return word.replace(new RegExp("[^" + validLetters + "]", "g"), " _ ");
 			})
 			.join(" ");
 
@@ -70,17 +71,10 @@ class App extends React.Component {
 			<div className="App">
 				<Header />
 				{(numOfLives === 0 && <p>{generatedWord}</p>) || <p>{hiddenWord}</p>}
-				{availableLetters.map((object, index) => {
-					return (
-						<ReusableButton
-							key={index}
-							text={object.letter}
-							disabled={object.disabled}
-							onClick={this.handleClick}
-							className="letter-button"
-						/>
-					);
-				})}
+				<Letters
+					availableLetters={availableLetters}
+					handleClick={this.handleClick}
+				/>
 				<br></br>
 				<img className={currentImage} src={Darth} alt="Darthvader"></img>
 				<p>Lives: {numOfLives}</p>
@@ -115,7 +109,7 @@ class App extends React.Component {
 			}));
 		} else {
 			this.setState(prevState => ({
-				usedLetters: prevState.usedLetters + value,
+				validLetters: prevState.validLetters + value,
 				availableLetters: allLetters
 			}));
 		}
@@ -128,7 +122,7 @@ class App extends React.Component {
 		setLetterToFalse.forEach(obj => (obj.disabled = false));
 		this.setState(() => ({
 			generatedWord: randomFilm,
-			usedLetters: "",
+			validLetters: "",
 			badLetters: "",
 			availableLetters: setLetterToFalse,
 			numOfLives: 5
